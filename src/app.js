@@ -1,6 +1,7 @@
 const express = require("express");
 const path = require("path");
 require("./db/conn");
+const User = require("./models/usermessage");
 const hbs = require("hbs");
 
 const app = express();
@@ -16,6 +17,8 @@ const partialpath = path.join(__dirname, "../Templates/partials")
 app.use('/css', express.static(path.join(__dirname, "../node_modules/bootstrap/dist/css")));
 app.use('/js', express.static(path.join(__dirname, "../node_modules/bootstrap/dist/js")));
 app.use('/jq', express.static(path.join(__dirname, "../node_modules/jquery/dist")));
+
+app.use(express,express.urlencoded({extended:false}))
 app.use(express.static(staticpath))
 app.set("view engine","hbs");
 app.set("views", templatepath);
@@ -30,6 +33,16 @@ app.get("/",(req,res)=> {
 
 app.get("/contact",(req,res)=> {
     res.render("contact");
+})
+
+app.post("/contact", async(req,res)=>{
+    try{
+        res.send(req.body);
+    }
+    catch(error){
+        res.status(500).send(error);
+    }
+
 })
 
 // server create
